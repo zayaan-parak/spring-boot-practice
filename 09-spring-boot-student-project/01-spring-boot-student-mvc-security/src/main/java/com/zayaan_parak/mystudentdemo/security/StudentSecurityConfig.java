@@ -13,7 +13,12 @@ public class StudentSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer -> configurer.anyRequest().authenticated());
+        http.authorizeHttpRequests(configurer ->
+                configurer
+                        .requestMatchers("/").hasRole("ROLE_PERSON")
+                        .requestMatchers("/teachers/**").hasRole("ROLE_TEACHER")
+                        .requestMatchers("/admins/**").hasRole("ROLE_ADMIN")
+                        .anyRequest().authenticated());
 
         return http.build();
     }
